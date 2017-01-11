@@ -25,8 +25,8 @@ public class ChangeOfPeriod {
 	Connector conn;
 	
 	@Autowired
-	ChangeOfPeriod(MailService mailService, Connector conn) {
-		this.periodService = new PeriodService();
+	ChangeOfPeriod(MailService mailService, Connector conn, PeriodService periodService) {
+		this.periodService = periodService;
 		this.mailService = mailService;
 		this.conn = conn;
 	}

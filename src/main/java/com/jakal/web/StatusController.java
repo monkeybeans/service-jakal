@@ -3,7 +3,6 @@ package com.jakal.web;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,8 +14,12 @@ import com.jakal.service.PeriodService;
 @RestController
 @Configuration
 public class StatusController {
-	@Value("${spring.mail.password}")
-	static String pass;
+	PeriodService periodService;
+	
+	@Autowired
+	public StatusController(PeriodService periodService) {
+		this.periodService = periodService;
+	}
 	
 	@Autowired
 	@RequestMapping("/status")
@@ -31,7 +34,7 @@ public class StatusController {
 
 	@RequestMapping(path="/period", method=RequestMethod.GET)
 	public String period(Status status) {
-		return new PeriodService().getPeriodString(Calendar.getInstance());
+		return periodService.getPeriodString(Calendar.getInstance());
 	}
 
 }
