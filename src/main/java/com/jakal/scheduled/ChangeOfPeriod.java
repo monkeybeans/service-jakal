@@ -1,14 +1,12 @@
 package com.jakal.scheduled;
 
-import java.util.Calendar;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.jakal.enums.Period;
+import com.jakal.models.Period;
 import com.jakal.service.MailService;
 import com.jakal.service.PeriodService;
 import com.jakal.storage.Connector;
@@ -19,7 +17,7 @@ public class ChangeOfPeriod {
 	static int num = 0;
 	Logger log = LoggerFactory.getLogger(this.getClass());
 
-	Period handledPeriod = Period.SUGGEST;
+	Period handledPeriod = null;
 	PeriodService periodService;
 	MailService mailService;
 	Connector conn;
@@ -33,15 +31,15 @@ public class ChangeOfPeriod {
 	
 	@Scheduled(cron = "0 0 5 * * ?")
 	public void checkPeriodChange() {
-		Period newPeriod = periodService.getPeriod(Calendar.getInstance());
-		log.info("Checking period: " + newPeriod.toString());
+		Period newPeriod = periodService.getPeriod();
+		log.info("Checking period: " + newPeriod.current);
 		
-		if (handledPeriod != newPeriod) {
-			log.info("New period: " + newPeriod.toString());
+		if (newPeriod.daysElapsed == 0) {
+			log.info("New period: " + newPeriod.current);
 
-			mailService.notifyPeriod(newPeriod);
+			mailService.notifyPeriod(newPeriod.current);
 			
-			if (newPeriod == Period.SUGGEST) {
+			if (newPeriod.current == Period.Current.SUGGEST) {
 				new Suggestion(conn).resetFreshSuggestions();				
 			}
 			

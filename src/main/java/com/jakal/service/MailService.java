@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jakal.config.StaticUrl;
-import com.jakal.enums.Period;
 import com.jakal.mail.NotifyByMail;
+import com.jakal.models.Period;
 import com.jakal.storage.Contact;
 
 @Component
@@ -37,7 +37,7 @@ public class MailService {
 		}.start();
 	}
 	
-	public void notifyPeriod(Period period) {
+	public void notifyPeriod(Period.Current period) {
 		List<String> addresses = dbContact.getAllAddresses();
 
 		String subject = "Notification, period changed...";

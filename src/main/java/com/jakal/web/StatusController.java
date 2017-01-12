@@ -34,7 +34,7 @@ public class StatusController {
 
 	@RequestMapping(path="/period", method=RequestMethod.GET)
 	public String period(Status status) {
-		return periodService.getPeriodString(Calendar.getInstance());
+		return periodService.getPeriodString();
 	}
 
 }
