@@ -9,24 +9,22 @@ import org.springframework.stereotype.Component;
 import com.jakal.models.Period;
 import com.jakal.service.MailService;
 import com.jakal.service.PeriodService;
-import com.jakal.storage.Connector;
-import com.jakal.storage.Suggestion;
+import com.jakal.storage.SuggestionDao;
 
 @Component
 public class ChangeOfPeriod {
 	static int num = 0;
 	Logger log = LoggerFactory.getLogger(this.getClass());
 
-	Period handledPeriod = null;
 	PeriodService periodService;
 	MailService mailService;
-	Connector conn;
+	SuggestionDao suggestionDao;
 	
 	@Autowired
-	ChangeOfPeriod(MailService mailService, Connector conn, PeriodService periodService) {
+	ChangeOfPeriod(MailService mailService, SuggestionDao suggestionDao, PeriodService periodService) {
 		this.periodService = periodService;
 		this.mailService = mailService;
-		this.conn = conn;
+		this.suggestionDao = suggestionDao;
 	}
 	
 	@Scheduled(cron = "0 0 5 * * ?")
@@ -40,10 +38,8 @@ public class ChangeOfPeriod {
 			mailService.notifyPeriod(newPeriod.current);
 			
 			if (newPeriod.current == Period.Current.SUGGEST) {
-				new Suggestion(conn).resetFreshSuggestions();				
+				suggestionDao.resetFreshSuggestions();				
 			}
-			
-			handledPeriod = newPeriod;
 		}
 		
 	}

@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 import com.jakal.config.StaticUrl;
 import com.jakal.mail.NotifyByMail;
 import com.jakal.models.Period;
-import com.jakal.storage.Contact;
+import com.jakal.storage.ContactDao;
 
 @Component
 public class MailService {
 	NotifyByMail notify;
-	Contact dbContact;
+	ContactDao dbContact;
 	
 	@Autowired
-	public MailService(NotifyByMail notify, Contact dbContact) {
+	public MailService(NotifyByMail notify, ContactDao dbContact) {
 		this.notify = notify;
 		this.dbContact = dbContact;
 	}

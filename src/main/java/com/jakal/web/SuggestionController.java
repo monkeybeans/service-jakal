@@ -1,7 +1,5 @@
 package com.jakal.web;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,56 +11,65 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jakal.models.Suggestion;
 import com.jakal.service.MailService;
-import com.jakal.storage.Mapper;
+import com.jakal.storage.ContactDao;
+import com.jakal.storage.SuggestionDao;
+import com.jakal.templates.DynamicsTemplate;
 
 @RestController
 public class SuggestionController {
 	Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	Mapper mapper;
 	MailService mail;
+	SuggestionDao suggestionDao;
+	ContactDao contactDao;
 	
 	@Autowired
-	public SuggestionController(Mapper mapper, MailService mail) {
-		this.mapper = mapper;
+	public SuggestionController(MailService mail, SuggestionDao suggestionDao, ContactDao contactDao) {
 		this.mail = mail;
+		this.suggestionDao = suggestionDao;
+		this.contactDao = contactDao;
+	}
+
+	@RequestMapping(path="/suggestions/fresh", method=RequestMethod.GET) 
+	public DynamicsTemplate fetchFreshSuggestions() {
+		
+		return DynamicsTemplate.build(suggestionDao);
+	}
+
+	@RequestMapping(path="/suggestions/{id}", method=RequestMethod.GET) 
+	public DynamicsTemplate fetchSuggestion(@PathVariable int id) {
+	
+		//return suggestionDao.fetchSuggestion(id);
+		throw new RuntimeException("Not implemented");
+	}
+
+	@RequestMapping(path="/suggestions/winner", method=RequestMethod.GET) 
+	public DynamicsTemplate fetchWinnerSuggestions() {
+		
+		//return suggestionDao.fetchWinnerSuggestions();
+		throw new RuntimeException("Not implemented");
 	}
 
 	@RequestMapping(path="/suggestions", method=RequestMethod.POST)
-	public void createSuggestion(@RequestBody(required=false) Suggestion suggestion) {
+	public DynamicsTemplate createSuggestion(@RequestBody(required=false) Suggestion suggestion) {
 		
 		log.info("Recieved suggestion" + suggestion);
 		if (suggestion != null) {
 			log.info("Suggestion recieved: " + suggestion.name);
-			mapper.addSuggestion(suggestion);
+			suggestionDao.addSuggestion(suggestion);
 			mail.notifyNewSuggestion(suggestion.name);
 		}
+		
+		return DynamicsTemplate.build(suggestionDao);
 	}
 	
 	@RequestMapping(path="/suggestions/{id}/vote", method=RequestMethod.PUT) 
-	public void voteOnSuggestion(@PathVariable int id) {
+	public DynamicsTemplate voteOnSuggestion(@PathVariable int id) {
 		log.info("Suggestion was voted on id: " + id);
 
-		mapper.voteOnSuggestion(id);
-	}
-
-	@RequestMapping(path="/suggestions/{id}", method=RequestMethod.GET) 
-	public Suggestion fetchSuggestion(@PathVariable int id) {
-	
-		return mapper.fetchSuggestion(id);
-	}
-
-
-	@RequestMapping(path="/suggestions/fresh", method=RequestMethod.GET) 
-	public List<Suggestion> fetchFreshSuggestions() {
+		suggestionDao.voteOnSuggestion(id);
 		
-		return mapper.fetchFreshSuggestions();
-	}
-	
-	@RequestMapping(path="/suggestions/winner", method=RequestMethod.GET) 
-	public List<Suggestion> fetchWinnerSuggestions() {
-		
-		return mapper.fetchWinnerSuggestions();
+		return DynamicsTemplate.build(suggestionDao);
 	}
 
 }
