@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
-import com.jakal.models.Suggestion; 
+import com.jakal.models.SuggestionModel; 
 
 @Repository
 public class SuggestionDao extends JdbcDaoSupport{
@@ -21,7 +21,7 @@ public class SuggestionDao extends JdbcDaoSupport{
 		super.setDataSource(dataSource);
 	}
 	
-	public List<Suggestion> fetchFreshSuggestions() {
+	public List<SuggestionModel> fetchFreshSuggestions() {
 		JdbcTemplate jdbcTemplate = super.getJdbcTemplate();
 
 		String sql = 
@@ -29,9 +29,9 @@ public class SuggestionDao extends JdbcDaoSupport{
 				"from votes v where v.suggestion_id = s.id) numVotes " +
 				"from suggestions  s where fresh = 1";
 		
-		RowMapper<Suggestion> mapper = new RowMapper<Suggestion>() {
-			public Suggestion mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return new Suggestion(
+		RowMapper<SuggestionModel> mapper = new RowMapper<SuggestionModel>() {
+			public SuggestionModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return new SuggestionModel(
 						rs.getInt("id"), 
 						rs.getString("name"),
 						rs.getString("description"),
@@ -50,7 +50,7 @@ public class SuggestionDao extends JdbcDaoSupport{
 		return jdbcTemplate.update(sql, id);
 	}
 
-	public List<Suggestion> getSuggestionWinners() {
+	public List<SuggestionModel> getSuggestionWinners() {
 		JdbcTemplate jdbcTemplate = super.getJdbcTemplate();
 
 		String sql = 
@@ -58,9 +58,9 @@ public class SuggestionDao extends JdbcDaoSupport{
 				"from votes v where v.suggestion_id = s.id) numVotes " +
 				"from suggestions s where fresh = 1 and winner = 1 limit 12";
 
-		RowMapper<Suggestion> mapper = new RowMapper<Suggestion>() {
-			public Suggestion mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return new Suggestion(
+		RowMapper<SuggestionModel> mapper = new RowMapper<SuggestionModel>() {
+			public SuggestionModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return new SuggestionModel(
 						rs.getInt("id"), 
 						rs.getString("name"), 
 						rs.getString("description"),  
@@ -83,7 +83,7 @@ public class SuggestionDao extends JdbcDaoSupport{
 		return jdbcTemplate.update(sqlReset, ids);
 	}
 
-	public int addSuggestion(Suggestion suggestion) {
+	public int addSuggestion(SuggestionModel suggestion) {
 		JdbcTemplate jdbcTemplate = super.getJdbcTemplate();
 
 		String sql = "insert into suggestions (name, description, submitted) values (?, ?, now())";

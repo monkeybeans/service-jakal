@@ -3,18 +3,18 @@ package com.jakal.templates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.jakal.models.Period;
-import com.jakal.models.Suggestion;
+import com.jakal.models.PeriodModel;
+import com.jakal.models.SuggestionModel;
 import com.jakal.service.PeriodService;
 
 public class ConfigTemplate {
 	public String period;
 	public int timeToNewPeriod;
 	public int elapsedPeriodTime;
-	public Suggestion lastWinner;
+	public SuggestionModel lastWinner;
 
 
-	private ConfigTemplate(String period, int timeToNewPeriod, int elapsedPeriodTime, Suggestion lastWinner) {		super();
+	private ConfigTemplate(String period, int timeToNewPeriod, int elapsedPeriodTime, SuggestionModel lastWinner) {		super();
 		this.period = period;
 		this.timeToNewPeriod = timeToNewPeriod;
 		this.elapsedPeriodTime = elapsedPeriodTime;
@@ -22,7 +22,7 @@ public class ConfigTemplate {
 	}
 
 	public static ConfigTemplate build(PeriodService periodService) {
-		Period period = periodService.getPeriod();
+		PeriodModel period = periodService.getPeriod();
 		
 		return new ConfigTemplate(
 					period.current.name().toLowerCase(),

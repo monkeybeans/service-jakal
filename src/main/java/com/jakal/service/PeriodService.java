@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Repository;
 
-import com.jakal.models.Period;
+import com.jakal.models.PeriodModel;
 
 @Repository
 @Configuration
@@ -30,8 +30,8 @@ public class PeriodService {
 		this.startDayDisplay = startDayDisplay;
 	}
 	
-	public Period getPeriod() {
-		return new Period(Calendar.getInstance(), startDaySuggest, startDayVote, startDayDisplay);
+	public PeriodModel getPeriod() {
+		return new PeriodModel(Calendar.getInstance(), startDaySuggest, startDayVote, startDayDisplay);
 	}
 	
 	public String getPeriodString() {

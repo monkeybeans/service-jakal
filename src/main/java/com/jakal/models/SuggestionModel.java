@@ -5,7 +5,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Suggestion {
+public class SuggestionModel {
 	Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	public static int numSuggestions = 0;
@@ -19,9 +19,9 @@ public class Suggestion {
 	public boolean isFresh = true;
 	public boolean isTimeToVote = false;
 	
-	public Suggestion() {}
+	public SuggestionModel() {}
 	
-	public Suggestion(int id, String name, String description, int numVotes) {
+	public SuggestionModel(int id, String name, String description, int numVotes) {
 		this();
 		this.id = id;
 		this.name = name;

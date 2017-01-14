@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.jakal.models.Period;
+import com.jakal.models.PeriodModel;
 import com.jakal.service.MailService;
 import com.jakal.service.PeriodService;
 import com.jakal.storage.SuggestionDao;
@@ -29,7 +29,7 @@ public class ChangeOfPeriod {
 	
 	@Scheduled(cron = "0 0 5 * * ?")
 	public void checkPeriodChange() {
-		Period newPeriod = periodService.getPeriod();
+		PeriodModel newPeriod = periodService.getPeriod();
 		log.info("Checking period: " + newPeriod.current);
 		
 		if (newPeriod.daysElapsed == 0) {
@@ -37,7 +37,7 @@ public class ChangeOfPeriod {
 
 			mailService.notifyPeriod(newPeriod.current);
 			
-			if (newPeriod.current == Period.Current.SUGGEST) {
+			if (newPeriod.current == PeriodModel.Current.SUGGEST) {
 				suggestionDao.resetFreshSuggestions();				
 			}
 		}

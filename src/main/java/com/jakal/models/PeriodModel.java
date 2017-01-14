@@ -2,12 +2,12 @@ package com.jakal.models;
 
 import java.util.Calendar;
 
-public class Period {
+public class PeriodModel {
 	public final int daysLeft;
 	public final int daysElapsed;
 	public final Current current;
 	
-	public Period(
+	public PeriodModel(
 			Calendar calendar,
 			int startDaySuggest,
 			int startDayVote,
@@ -17,15 +17,15 @@ public class Period {
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		
 		if (calcInPeriod(day, startDaySuggest, startDayVote, maxDays)) {
-			current = Period.Current.SUGGEST;
+			current = PeriodModel.Current.SUGGEST;
 			daysElapsed = calcElapsedDays(startDaySuggest, day, maxDays);
 			daysLeft = calcDaysLeft(startDayVote, day, maxDays);
 		} else if (calcInPeriod(day, startDayVote, startDayDisplay, maxDays)) {
-			current = Period.Current.VOTE;
+			current = PeriodModel.Current.VOTE;
 			daysElapsed = calcElapsedDays(startDayVote, day, maxDays);
 			daysLeft = calcDaysLeft(startDayDisplay, day, maxDays);
 		} else {
-			current = Period.Current.DISPLAY;
+			current = PeriodModel.Current.DISPLAY;
 			daysElapsed = calcElapsedDays(startDayDisplay, day, maxDays);
 			daysLeft = calcDaysLeft(startDaySuggest, day, maxDays);
 		}

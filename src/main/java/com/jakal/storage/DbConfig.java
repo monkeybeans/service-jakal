@@ -14,12 +14,11 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 public class DbConfig extends DriverManagerDataSource{
 	Logger log = LoggerFactory.getLogger(this.getClass());
 
-	DataSource jakalDb;
-	JdbcTemplate jdbcTemplate;
-	
-	//DataSource dataSource
 	@Autowired
-	public DbConfig(@Value("${db.user}") String username, @Value("${db.password}") String password) {
+	public DbConfig(
+			@Value("${db.user}") String username, 
+			@Value("${db.password}") String password) 
+	{
 		super();
 		log.info("setting up db connection");
 		
