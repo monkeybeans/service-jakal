@@ -12,14 +12,15 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ContactDao extends JdbcDaoSupport {
-	JdbcTemplate jdbcTemplate;
-	
+
 	@Autowired
-	public ContactDao(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public ContactDao(DbConfig dataSource) {
+		super.setDataSource(dataSource);
 	}
 	
 	public List<String> getAllAddresses() {
+		JdbcTemplate jdbcTemplate = super.getJdbcTemplate();
+
 		String sql = "select email from users where email is not null order by email limit 30";
 		
 		RowMapper<String> mapper = new RowMapper<String>() {

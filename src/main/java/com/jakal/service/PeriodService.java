@@ -1,14 +1,14 @@
 package com.jakal.service;
 
 import java.util.Calendar;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Repository;
 
 import com.jakal.models.Period;
 
+@Repository
 @Configuration
 public class PeriodService {
 	@Value("${override.period}")

@@ -15,15 +15,15 @@ import com.jakal.models.Suggestion;
 
 @Repository
 public class SuggestionDao extends JdbcDaoSupport{
-
-	JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	public SuggestionDao(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public SuggestionDao(DbConfig dataSource) {
+		super.setDataSource(dataSource);
 	}
 	
 	public List<Suggestion> fetchFreshSuggestions() {
+		JdbcTemplate jdbcTemplate = super.getJdbcTemplate();
+
 		String sql = 
 				"select id, name, description, (select count(*) " +
 				"from votes v where v.suggestion_id = s.id) numVotes " +
@@ -34,7 +34,7 @@ public class SuggestionDao extends JdbcDaoSupport{
 				return new Suggestion(
 						rs.getInt("id"), 
 						rs.getString("name"),
-						rs.getString("suggestion"),
+						rs.getString("description"),
 						rs.getInt("numVotes"));
 			}
 		};
@@ -43,12 +43,16 @@ public class SuggestionDao extends JdbcDaoSupport{
 	}
 	
 	public int voteOnSuggestion(int id) {
+		JdbcTemplate jdbcTemplate = super.getJdbcTemplate();
+
 		String sql = "insert into votes (suggestion_id) values (?)";
 		
 		return jdbcTemplate.update(sql, id);
 	}
 
 	public List<Suggestion> getSuggestionWinners() {
+		JdbcTemplate jdbcTemplate = super.getJdbcTemplate();
+
 		String sql = 
 				"select id, name, description, (select count(*) " +
 				"from votes v where v.suggestion_id = s.id) numVotes " +
@@ -68,6 +72,8 @@ public class SuggestionDao extends JdbcDaoSupport{
 	}
 	
 	public int resetFreshSuggestions() {
+		JdbcTemplate jdbcTemplate = super.getJdbcTemplate();
+
 		String sqlIds = "select id from suggestions where fresh = 1";
 		List<Integer> ids = jdbcTemplate.queryForList(sqlIds, Integer.class);
 
@@ -78,6 +84,8 @@ public class SuggestionDao extends JdbcDaoSupport{
 	}
 
 	public int addSuggestion(Suggestion suggestion) {
+		JdbcTemplate jdbcTemplate = super.getJdbcTemplate();
+
 		String sql = "insert into suggestions (name, description, submitted) values (?, ?, now())";
 		
 		return jdbcTemplate.update(sql, suggestion.name, suggestion.description);
