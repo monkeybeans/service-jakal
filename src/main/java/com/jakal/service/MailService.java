@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.jakal.config.StaticUrl;
-import com.jakal.mail.NotifyByMail;
+import com.jakal.constants.StaticUrl;
 import com.jakal.models.PeriodModel;
+import com.jakal.service.mail.NotifyByMail;
 import com.jakal.storage.ContactDao;
 
 @Component
@@ -26,7 +26,7 @@ public class MailService {
 			List<String> addresses = dbContact.getAllAddresses();
 			
 			String subject = "New suggestion! " + suggestion;
-			String body = "There is a new suggestion for " + suggestion + ". See http://monkeybean.st/jakal for details.";
+			String body = "There is a new suggestion for " + suggestion + ". See "+ StaticUrl.HOME_URL +" for details.";
 
 			public void run() {
 				notify.sendMail(

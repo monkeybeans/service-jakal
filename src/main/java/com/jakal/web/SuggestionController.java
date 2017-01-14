@@ -51,7 +51,7 @@ public class SuggestionController {
 		throw new RuntimeException("Not implemented");
 	}
 
-	@RequestMapping(path="/", method=RequestMethod.POST)
+	@RequestMapping(path="", method=RequestMethod.POST)
 	public DynamicsTemplate createSuggestion(@RequestBody(required=false) SuggestionModel suggestion) {
 		
 		log.info("Recieved suggestion" + suggestion);

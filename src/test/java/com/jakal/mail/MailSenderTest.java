@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.jakal.service.mail.NotifyByMail;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 //@RunWith(SpringJUnit4ClassRunner.class)

@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,7 +19,7 @@ import com.jakal.models.SuggestionModel;
 public class SuggestionDao extends JdbcDaoSupport{
 	
 	@Autowired
-	public SuggestionDao(DbConfig dataSource) {
+	public SuggestionDao(DataSource dataSource) {
 		super.setDataSource(dataSource);
 	}
 	

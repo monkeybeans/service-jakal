@@ -1,4 +1,4 @@
-package com.jakal.mail;
+package com.jakal.service.mail;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,20 +21,12 @@ public class NotifyByMail {
 	public NotifyByMail(
 			JavaMailSender mailSender, 
 			SimpleMailMessage templateMessage, 
-			@Value("${enable.mail") String mailEnabled) {
+			@Value("${mail.enabled}") String mailEnabled) {
 				
 		this.mailSender = mailSender;
 		this.templateMessage = templateMessage;
 		this.mailEnabled = mailEnabled;
 	}
-
-//    public void setMailSender(JavaMailSenderImpl mailSender) {
-//        this.mailSender = mailSender;
-//    }
-//
-//    public void setTemplateMessage(SimpleMailMessage templateMessage) {
-//        this.templateMessage = templateMessage;
-//    }
 
     public void sendMail(String subject, String text, String[] addresses) {
     	
@@ -44,14 +36,16 @@ public class NotifyByMail {
         msg.setText(text);
       
         try{
-        	if ("yes".equals(mailEnabled)) {
+        	if ("true".equals(mailEnabled)) {
+        		log.info("sent mail " + msg.getSubject() + " to: " + String.join(",", msg.getTo()));
                 this.mailSender.send(msg);        		
         	} else {
-        		log.info("Mail sending disablesd but would have sent: ", 
-        				msg.getSubject(), 
-        				msg.getText(), 
-        				" to ", 
-        				msg.getTo());
+        		log.info(
+        					"Mail sending disabled(mail.enabled=" + mailEnabled +") but would have sent:\n" + 
+        					"<<to>> " + String.join(", ", msg.getTo()) + "<<to>>\n" +
+        					"<<subject>> " + msg.getSubject() + "<<subject>>\n" +
+        					"<<body>> " + msg.getText() + "<<body>>"
+        				);
         	}
         }
         catch (MailException ex) {
