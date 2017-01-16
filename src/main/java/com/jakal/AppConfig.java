@@ -15,6 +15,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+
 @Configuration
 public class AppConfig {
 	Logger log = LoggerFactory.getLogger(this.getClass());
@@ -72,6 +75,11 @@ public class AppConfig {
     	SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
        
     	return simpleMailMessage;
+    }
+    
+    @Bean
+    public ObjectMapper jacksonObjectMapper() {
+        return new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
     }
 
 }

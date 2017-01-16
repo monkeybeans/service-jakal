@@ -34,26 +34,6 @@ public class SuggestionController {
 		this.contactDao = contactDao;
 	}
 
-	@RequestMapping(path="/fresh", method=RequestMethod.GET) 
-	public DynamicsTemplate fetchFreshSuggestions() {
-		
-		return DynamicsTemplate.build(suggestionDao);
-	}
-
-	@RequestMapping(path="/{id}", method=RequestMethod.GET) 
-	public DynamicsTemplate fetchSuggestion(@PathVariable int id) {
-	
-		//return suggestionDao.fetchSuggestion(id);
-		throw new RuntimeException("Not implemented");
-	}
-
-	@RequestMapping(path="/winner", method=RequestMethod.GET) 
-	public DynamicsTemplate fetchWinnerSuggestions() {
-		
-		//return suggestionDao.fetchWinnerSuggestions();
-		throw new RuntimeException("Not implemented");
-	}
-
 	@RequestMapping(path="", method=RequestMethod.POST)
 	public DynamicsTemplate createSuggestion(@RequestBody(required=false) SuggestionModel suggestion) {
 		
