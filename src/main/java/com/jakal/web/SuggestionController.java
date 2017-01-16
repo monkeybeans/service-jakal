@@ -19,7 +19,7 @@ import com.jakal.templates.DynamicsTemplate;
 import com.jakal.web.helpers.RequestHelper;
 
 @RestController
-@RequestMapping("/v1/suggestions")
+@RequestMapping("/api/v1/suggestions")
 public class SuggestionController {
 	Logger log = LoggerFactory.getLogger(this.getClass());
 	

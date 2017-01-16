@@ -12,7 +12,7 @@ import com.jakal.templates.DynamicsTemplate;
 import com.jakal.templates.HistoryTemplate;
 
 @RestController()
-@RequestMapping("/v1/meta")
+@RequestMapping("/api/v1/meta")
 public class MetaController {
 	PeriodService periodService;
 	SuggestionDao suggestionDao;
