@@ -1,22 +1,18 @@
 package com.jakal.templates;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.jakal.models.PeriodModel;
-import com.jakal.models.SuggestionModel;
 import com.jakal.service.PeriodService;
 
 public class ConfigTemplate {
 	public String period;
-	public int timeToNewPeriod;
-	public int elapsedPeriodTime;
+	public int daysToNextPeriod;
+	public int elapsedPeriodDays;
 
 
 	private ConfigTemplate(String period, int timeToNewPeriod, int elapsedPeriodTime) {		super();
 		this.period = period;
-		this.timeToNewPeriod = timeToNewPeriod;
-		this.elapsedPeriodTime = elapsedPeriodTime;
+		this.daysToNextPeriod = timeToNewPeriod;
+		this.elapsedPeriodDays = elapsedPeriodTime;
 	}
 
 	public static ConfigTemplate build(PeriodService periodService) {
