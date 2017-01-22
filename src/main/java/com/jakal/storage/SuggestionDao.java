@@ -46,8 +46,19 @@ public class SuggestionDao extends JdbcDaoSupport{
 	
 	public int voteOnSuggestion(int id, String voterId) {
 		JdbcTemplate jdbcTemplate = super.getJdbcTemplate();
-
-		String sql = "insert into votes (suggestion_id, voter_id, vote_date, round) values (?, ?, now(), ?)";
+		
+		String sqlPre = "select count(*) "
+				+ "from jakal.suggestions "
+				+ "where fresh = 1 and id = ?";
+		int isFresh = (int)jdbcTemplate.queryForObject(sqlPre,  new Object[] {id}, Integer.class);
+		if (isFresh == 0) {
+			// TODO: should be some better exception here...
+			throw new RuntimeException("Suggestion id is not fresh");
+		}
+		
+		String sql = "insert into votes"
+				+ " (suggestion_id, voter_id, vote_date, round) values "
+				+ "(?, ?, now(), ?)";
 		
 		return jdbcTemplate.update(sql, id, voterId, 1);
 	}

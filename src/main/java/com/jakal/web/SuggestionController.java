@@ -1,5 +1,7 @@
 package com.jakal.web;
 
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -16,7 +18,6 @@ import com.jakal.service.MailService;
 import com.jakal.storage.ContactDao;
 import com.jakal.storage.SuggestionDao;
 import com.jakal.templates.DynamicsTemplate;
-import com.jakal.web.helpers.RequestHelper;
 
 @RestController
 @RequestMapping("/api/v1/suggestions")
@@ -49,10 +50,9 @@ public class SuggestionController {
 	
 	@RequestMapping(path="/{id}/vote", method=RequestMethod.PUT) 
 	public DynamicsTemplate voteOnSuggestion(@PathVariable int id, HttpServletRequest request) {
-		String voterId = RequestHelper.scrambleIp(request);
-		log.info("Suggestion was voted on id: " + id + " by: " + voterId);
+		log.info("Suggestion was voted on id: " + id);
 
-		suggestionDao.voteOnSuggestion(id, voterId);
+		suggestionDao.voteOnSuggestion(id, UUID.randomUUID().toString());
 		
 		return DynamicsTemplate.build(suggestionDao);
 	}
