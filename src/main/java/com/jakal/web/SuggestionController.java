@@ -49,9 +49,10 @@ public class SuggestionController {
 	
 	@RequestMapping(path="/{id}/vote", method=RequestMethod.PUT) 
 	public DynamicsTemplate voteOnSuggestion(@PathVariable int id, HttpServletRequest request) {
-		log.info("Suggestion was voted on id: " + id + " by: " + RequestHelper.scrambleIp(request));
+		String voterId = RequestHelper.scrambleIp(request);
+		log.info("Suggestion was voted on id: " + id + " by: " + voterId);
 
-		suggestionDao.voteOnSuggestion(id);
+		suggestionDao.voteOnSuggestion(id, voterId);
 		
 		return DynamicsTemplate.build(suggestionDao);
 	}

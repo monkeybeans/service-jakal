@@ -44,12 +44,12 @@ public class SuggestionDao extends JdbcDaoSupport{
 		return jdbcTemplate.query(sql, mapper);
 	}
 	
-	public int voteOnSuggestion(int id) {
+	public int voteOnSuggestion(int id, String voterId) {
 		JdbcTemplate jdbcTemplate = super.getJdbcTemplate();
 
-		String sql = "insert into votes (suggestion_id) values (?)";
+		String sql = "insert into votes (suggestion_id, voter_id, vote_date, round) values (?, ?, now(), ?)";
 		
-		return jdbcTemplate.update(sql, id);
+		return jdbcTemplate.update(sql, id, voterId, 1);
 	}
 
 	public List<SuggestionModel> getSuggestionWinners() {
