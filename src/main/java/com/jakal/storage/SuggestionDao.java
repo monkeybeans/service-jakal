@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -17,10 +18,13 @@ import com.jakal.models.SuggestionModel;
 
 @Repository
 public class SuggestionDao extends JdbcDaoSupport{
+	int voteRound;
 	
 	@Autowired
-	public SuggestionDao(DataSource dataSource) {
+	public SuggestionDao(DataSource dataSource, @Value("${vote.round}") int voteRound) {
 		super.setDataSource(dataSource);
+		
+		this.voteRound = voteRound;
 	}
 	
 	public List<SuggestionModel> fetchFreshSuggestions() {
@@ -60,7 +64,7 @@ public class SuggestionDao extends JdbcDaoSupport{
 				+ " (suggestion_id, voter_id, vote_date, round) values "
 				+ "(?, ?, now(), ?)";
 		
-		return jdbcTemplate.update(sql, id, voterId, 1);
+		return jdbcTemplate.update(sql, id, voterId, this.voteRound);
 	}
 
 	public List<SuggestionModel> getSuggestionWinners() {
